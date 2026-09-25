@@ -34,7 +34,7 @@ function Card({ technology, onAdd, isAdded }) {
 
       {/* Category / Difficulty / Rating */}
       <div className="flex items-center justify-between mt-5 text-xs">
-        <span className="text-gray-700">
+        <span className="text-xs font-medium text-pink-700 bg-pink-50 px-3 py-1 rounded-full">
           {technology.category}
         </span>
 
