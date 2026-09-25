@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -6,10 +6,25 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Card from "./components/card";
 import Footer from "./components/footer";
-import technologies from "./data/technologies.json";
 
 function App() {
+  const [technologies, setTechnologies] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [stack, setStack] = useState([]);
+
+  // Load technologies
+  useEffect(() => {
+    fetch("/src/data/technologies.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setTechnologies(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error loading technologies:", error);
+        setLoading(false);
+      });
+  }, []);
 
   const handleAdd = (technology) => {
     if (stack.some((item) => item.id === technology.id)) {
@@ -63,21 +78,30 @@ function App() {
 
         {/* Cards and Stack */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-10">
+
           {/* Technology Cards */}
           <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {technologies.map((technology) => (
-              <Card
-                key={technology.id}
-                technology={technology}
-                onAdd={handleAdd}
-                isAdded={stack.some(
-                  (item) => item.id === technology.id
-                )}
-              />
-            ))}
+            {loading ? (
+              <div className="col-span-full text-center py-16">
+                <p className="text-gray-500 text-lg">
+                  Loading technologies...
+                </p>
+              </div>
+            ) : (
+              technologies.map((technology) => (
+                <Card
+                  key={technology.id}
+                  technology={technology}
+                  onAdd={handleAdd}
+                  isAdded={stack.some(
+                    (item) => item.id === technology.id
+                  )}
+                />
+              ))
+            )}
           </div>
 
-          {/*Stack */}
+          {/* Stack */}
           <div className="bg-white border border-gray-200 rounded-2xl p-5 h-fit lg:sticky lg:top-24">
             <h3 className="text-xl font-bold text-gray-900">
               Your Stack
