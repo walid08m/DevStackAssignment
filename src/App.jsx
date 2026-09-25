@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Card from "./components/card";
@@ -10,22 +13,35 @@ function App() {
 
   const handleAdd = (technology) => {
     if (stack.some((item) => item.id === technology.id)) {
+      toast.warning(`${technology.name} is already in your stack!`);
       return;
     }
 
     setStack([...stack, technology]);
+    toast.success(`${technology.name} added to your stack!`);
   };
 
   const handleRemove = (id) => {
+    const technology = stack.find((item) => item.id === id);
+
     setStack(stack.filter((item) => item.id !== id));
+
+    if (technology) {
+      toast.info(`${technology.name} removed from your stack.`);
+    }
   };
 
   const handleRemoveAll = () => {
+    if (stack.length === 0) return;
+
     setStack([]);
+    toast.info("All technologies removed from your stack.");
   };
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={2000} />
+
       <Navbar />
 
       <Hero />
@@ -45,9 +61,8 @@ function App() {
           </p>
         </div>
 
-        {/* Cards + Stack */}
+        {/* Cards and Stack */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-10">
-
           {/* Technology Cards */}
           <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {technologies.map((technology) => (
@@ -62,9 +77,8 @@ function App() {
             ))}
           </div>
 
-          {/* Your Stack */}
+          {/*Stack */}
           <div className="bg-white border border-gray-200 rounded-2xl p-5 h-fit lg:sticky lg:top-24">
-
             <h3 className="text-xl font-bold text-gray-900">
               Your Stack
             </h3>
