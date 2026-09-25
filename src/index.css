@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --brand-gradient: linear-gradient(
+    90deg,
+    #ff7a18,
+    #ff3d81,
+    #7c3aed
+  );
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
