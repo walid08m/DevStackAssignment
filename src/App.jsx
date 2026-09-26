@@ -14,7 +14,7 @@ function App() {
 
   // Load technologies
   useEffect(() => {
-    fetch("/src/data/technologies.json")
+    fetch("/data/technologies.json")
       .then((response) => response.json())
       .then((data) => {
         setTechnologies(data);
